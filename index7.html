@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa !important;
+        }
+
+        .calculator {
+            width: 350px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .screen {
+            font-size: 2rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+            width: 100%;
+            height: 150px;
+        }
+
+        .btn-calc {
+            width: 60px;
+            height: 40px;
+            font-size: 1.1rem;
+            margin: 3px;
+            background-color: white;
+            border-radius: 0 !important;
+        }
+
+        .btn-calc sup {
+            font-size: 0.75em;
+        }
+
+        .gap-25px {
+            gap: 25px;
+        }
+
+        .calDiv__btn {
+            background-color: transparent;
+            box-shadow: none;
+        }
+
+        .calDiv {
+            padding: 0.6rem;
+            max-height: 100%;
+            box-shadow: 0rem 0rem 0.25rem 0.0625rem grey;
+        }
+
+        .btn-equal {
+            background-color: #6690ce !important;
+            color: white;
+        }
+
+        .btn-opacity {
+            opacity: 0.6;
+        }
+
+        .btn-bold {
+            font-weight: bold;
+        }
+
+        .btn-trig-func {
+            font-size: .75rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+            border-radius: 5px;
+            padding: 6px 0px;
+        }
+
+        .calDiv__trigonoImg--size {
+            width: 1.1rem;
+            object-fit: contain;
+            vertical-align: middle;
+            transform: rotate(270deg);
+        }
+
+        .arrow-icon {
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        .row {
+            --bs-gutter-x: 1.5rem;
+            --bs-gutter-y: 0;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: calc(-1 * var(--bs-gutter-y));
+            margin-right: calc(-.5 * var(--bs-gutter-x));
+            margin-left: calc(-0.2 * var(--bs-gutter-x));
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="calculator">
+            <div class="screen">0</div>
+
+            <div class="d-flex justify-content-start ms-1 gap-25px">
+                <button class="btn btn-light calDiv__btn border-0 p-1">DEG</button>
+                <button class="btn btn-light calDiv__btn border-0 p-1">F-E</button>
+            </div>
+
+            <div class="d-flex justify-content-between my-2">
+                <button class="btn btn-light btn-sm btn-opacity">MC</button>
+                <button class="btn btn-light btn-sm btn-opacity">MR</button>
+                <button class="btn btn-light btn-sm btn-bold">M+</button>
+                <button class="btn btn-light btn-sm btn-bold">M-</button>
+                <button class="btn btn-light btn-sm btn-bold">MS</button>
+            </div>
+
+            <div class="d-flex justify-content-start ms-1 gap-25px">
+                <button class="btn btn-light btn-sm btn-trig-func">
+                    <img src="./images/triangle.png" alt="triangle" class="calDiv__trigonoImg--size">
+                    Trigonometry
+                    <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                </button>
+
+                <button class="btn btn-light btn-sm btn-trig-func">
+                    𝑓 Function
+                    <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                </button>
+            </div>
+
+            <div class="row text-center">
+                <button class="btn btn-light btn-calc">2<sup>nd</sup></button>
+
+                <button class="btn btn-light btn-calc">&pi;</button>
+                <button class="btn btn-light btn-calc">e</button>
+                <button class="btn btn-light btn-calc" data-action="clear">C</button>
+                <button class="btn btn-light btn-calc" data-action="backspace">⌫</button>
+                <button class="btn btn-light btn-calc">x²</button>
+                <button class="btn btn-light btn-calc">¹∕ₓ</button>
+                <button class="btn btn-light btn-calc">|x|</button>
+                <button class="btn btn-light btn-calc">exp</button>
+                <button class="btn btn-light btn-calc" data-action="mod">mod</button>
+                <button class="btn btn-light btn-calc">√x</button>
+                <button class="btn btn-light btn-calc">(</button>
+                <button class="btn btn-light btn-calc">)</button>
+                <button class="btn btn-light btn-calc">n!</button>
+                <button class="btn btn-light btn-calc" data-action="divide">÷</button>
+                <button class="btn btn-light btn-calc">xʸ</button>
+                <button class="btn btn-light btn-calc" data-action="7">7</button>
+                <button class="btn btn-light btn-calc" data-action="8">8</button>
+                <button class="btn btn-light btn-calc" data-action="9">9</button>
+                <button class="btn btn-light btn-calc" data-action="multiply">×</button>
+                <button class="btn btn-light btn-calc">10ˣ</button>
+                <button class="btn btn-light btn-calc" data-action="4">4</button>
+                <button class="btn btn-light btn-calc" data-action="5">5</button>
+                <button class="btn btn-light btn-calc" data-action="6">6</button>
+                <button class="btn btn-light btn-calc" data-action="minus">−</button>
+                <button class="btn btn-light btn-calc">log</button>
+                <button class="btn btn-light btn-calc" data-action="1">1</button>
+                <button class="btn btn-light btn-calc" data-action="2">2</button>
+                <button class="btn btn-light btn-calc" data-action="3">3</button>
+                <button class="btn btn-light btn-calc" data-action="add">+</button>
+                <button class="btn btn-light btn-calc">ln</button>
+                <button class="btn btn-light btn-calc" data-action="plus-minus">+/-</button>
+                <button class="btn btn-light btn-calc" data-action="0">0</button>
+                <button class="btn btn-light btn-calc" data-action="decimal">.</button>
+                <button class="btn btn-equal btn-calc" data-action="equals">=</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class Calculator {
+            constructor() {
+                this.currentValue = '0';  // Displayed value on screen
+                this.previousValue = '';  // Stores previous value for operations
+                this.operation = '';  // Stores the current operation (+, -, *, /)
+            }
+
+            updateScreen() {
+                document.querySelector('.screen').textContent = this.currentValue;
+            }
+
+            appendNumber(number) {
+                if (this.currentValue === '0') {
+                    this.currentValue = number;
+                } else {
+                    this.currentValue += number;
+                }
+                this.updateScreen();
+            }
+
+            clear() {
+                this.currentValue = '0';
+                this.previousValue = '';
+                this.operation = '';
+                this.updateScreen();
+            }
+
+            backspace() {
+                this.currentValue = this.currentValue.slice(0, -1) || '0';
+                this.updateScreen();
+            }
+
+            operate() {
+                if (this.operation === '') return;
+
+                const num1 = parseFloat(this.previousValue);
+                const num2 = parseFloat(this.currentValue);
+
+                switch (this.operation) {
+                    case '+':
+                        this.currentValue = (num1 + num2).toString();
+                        break;
+                    case '-':
+                        this.currentValue = (num1 - num2).toString();
+                        break;
+                    case '*':
+                        this.currentValue = (num1 * num2).toString();
+                        break;
+                    case '/':
+                        if (num2 === 0) {
+                            this.currentValue = 'Error';
+                        } else {
+                            this.currentValue = (num1 / num2).toString();
+                        }
+                        break;
+                    case 'mod':
+                        this.currentValue = (num1 % num2).toString();
+                        break;
+                    default:
+                        return;
+                }
+                this.updateScreen();
+                this.previousValue = '';
+                this.operation = '';
+            }
+
+            setOperation(op) {
+                if (this.previousValue !== '') {
+                    this.operate();
+                }
+                this.operation = op;
+                this.previousValue = this.currentValue;
+                this.currentValue = '0';
+            }
+
+            decimal() {
+                if (!this.currentValue.includes('.')) {
+                    this.currentValue += '.';
+                    this.updateScreen();
+                }
+            }
+        }
+
+        const calculator = new Calculator();
+
+        // Button click handlers
+        document.querySelectorAll('.btn-calc').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const action = event.target.getAttribute('data-action');
+
+                if (action >= '0' && action <= '9') {
+                    calculator.appendNumber(action);
+                } else if (action === 'clear') {
+                    calculator.clear();
+                } else if (action === 'backspace') {
+                    calculator.backspace();
+                } else if (action === 'mod' || action === 'add' || action === 'minus' || action === 'multiply' || action === 'divide') {
+                    calculator.setOperation(action);
+                } else if (action === 'equals') {
+                    calculator.operate();
+                } else if (action === 'decimal') {
+                    calculator.decimal();
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

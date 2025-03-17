@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa !important;
+        }
+
+        .calculator {
+            width: 350px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .screen {
+            font-size: 2rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+            width: 100%;
+            height: 150px;
+        }
+
+        .btn-calc {
+            width: 60px;
+            height: 40px;
+            font-size: 1.1rem;
+            margin: 3px;
+            background-color: white;
+            border-radius: 0 !important;
+        }
+
+        .btn-calc sup {
+            font-size: 0.75em;
+        }
+
+        .gap-25px {
+            gap: 25px;
+        }
+
+        .calDiv__btn {
+            background-color: transparent;
+            box-shadow: none;
+        }
+
+        .calDiv {
+            padding: 0.6rem;
+            max-height: 100%;
+            box-shadow: 0rem 0rem 0.25rem 0.0625rem grey;
+        }
+
+        .btn-equal {
+            background-color: #6690ce !important;
+            color: white;
+        }
+
+        .btn-opacity {
+            opacity: 0.6;
+        }
+
+        .btn-bold {
+            font-weight: bold;
+        }
+
+        .btn-trig-func {
+            font-size: .75rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+            border-radius: 5px;
+            padding: 6px 0px;
+        }
+
+        .calDiv__trigonoImg--size {
+            width: 1.1rem;
+            object-fit: contain;
+            vertical-align: middle;
+            transform: rotate(270deg);
+        }
+
+        .arrow-icon {
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .row {
+            --bs-gutter-x: 1.5rem;
+            --bs-gutter-y: 0;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: calc(-1 * var(--bs-gutter-y));
+            margin-right: calc(-.5 * var(--bs-gutter-x));
+            margin-left: calc(-0.2 * var(--bs-gutter-x));
+        }
+
+        /* Initially hide the trigonometric dropdown */
+        #trigDropdown {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            z-index: 1;
+        }
+
+        /* Style for dropdown buttons */
+        #trigDropdown .btn-calc {
+            background-color: #f1f1f1;
+            border: none;
+            padding: 10px;
+            text-align: left;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        #trigDropdown .btn-calc:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="calculator">
+            <div class="screen" id="screen">0</div>
+
+            <div class="d-flex justify-content-start ms-1 gap-25px">
+                <button class="btn btn-light calDiv__btn border-0 p-1">DEG</button>
+                <button class="btn btn-light calDiv__btn border-0 p-1">F-E</button>
+            </div>
+            <div class="d-flex justify-content-between my-2">
+                <button class="btn btn-light btn-sm btn-opacity btn-calc" data-action="mc">MC</button>
+                <button class="btn btn-light btn-sm btn-opacity btn-calc" data-action="mr">MR</button>
+                <button class="btn btn-light btn-sm btn-bold btn-calc" data-action="M+">M+</button>
+                <!-- Make sure M+ is uppercase -->
+                <button class="btn btn-light btn-sm btn-bold btn-calc" data-action="M-">M-</button>
+                <!-- Make sure M- is uppercase -->
+                <button class="btn btn-light btn-sm btn-bold btn-calc" data-action="ms">MS</button>
+            </div>
+
+            <div class="d-flex justify-content-start ms-1 gap-25px">
+                <button class="btn btn-light btn-sm btn-trig-func" id="trigBtn">
+                    <img src="./images/triangle.png" alt="triangle" class="calDiv__trigonoImg--size">
+                    Trigonometry
+                    <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                </button>
+
+                <button class="btn btn-light btn-sm btn-trig-func">
+                    𝑓 Function
+                    <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                </button>
+            </div>
+
+            <!-- Trigonometry Dropdown Menu -->
+            <!-- Trigonometric Dropdown Menu -->
+            <!-- Trigonometric Dropdown Menu -->
+            <div class="dropdown-menu" id="trigDropdown" style="display: none;">
+                <button class="btn-calc" data-action="sin">sin</button>
+                <button class="btn-calc" data-action="cos">cos</button>
+                <button class="btn-calc" data-action="tan">tan</button>
+                <button class="btn-calc" data-action="sin^-1">sin⁻¹</button>
+                <button class="btn-calc" data-action="cos^-1">cos⁻¹</button>
+                <button class="btn-calc" data-action="tan^-1">tan⁻¹</button>
+            </div>
+
+
+
+
+            <div class="row text-center">
+                <button class="btn btn-light btn-calc">2<sup>nd</sup></button>
+                <button class="btn btn-light btn-calc" data-action="pi">π</button>
+                <button class="btn btn-light btn-calc" data-action="e">e</button>
+                <button class="btn btn-light btn-calc" data-action="clear">C</button>
+                <button class="btn btn-light btn-calc" data-action="backspace">⌫</button>
+                <button class="btn btn-light btn-calc" data-action="square">x²</button>
+                <button class="btn btn-light btn-calc" data-action="inverse">¹∕ₓ</button>
+                <button class="btn btn-light btn-calc" data-action="absolute">|x|</button>
+                <button class="btn btn-light btn-calc" data-action="exp">exp</button>
+                <button class="btn btn-light btn-calc" data-action="mod">mod</button>
+                <button class="btn btn-light btn-calc" data-action="sqrt">√x</button>
+                <button class="btn btn-light btn-calc" data-action="open-parenthesis">(</button>
+                <button class="btn btn-light btn-calc" data-action="close-parenthesis">)</button>
+
+
+
+                <button class="btn btn-light btn-calc" data-action="factorial">n!</button>
+                <button class="btn btn-light btn-calc" data-action="divide">÷</button>
+                <button class="btn btn-light btn-calc" data-action="xPowerY">xʸ</button>
+
+                <button class="btn btn-light btn-calc" data-action="7">7</button>
+                <button class="btn btn-light btn-calc" data-action="8">8</button>
+                <button class="btn btn-light btn-calc" data-action="9">9</button>
+                <button class="btn btn-light btn-calc" data-action="multiply">×</button>
+                <button class="btn btn-light btn-calc" data-action="tenPowerX">10ˣ</button>
+                <button class="btn btn-light btn-calc" data-action="4">4</button>
+                <button class="btn btn-light btn-calc" data-action="5">5</button>
+                <button class="btn btn-light btn-calc" data-action="6">6</button>
+                <button class="btn btn-light btn-calc" data-action="minus">−</button>
+                <button class="btn btn-light btn-calc" data-action="log">log</button>
+                <button class="btn btn-light btn-calc" data-action="1">1</button>
+                <button class="btn btn-light btn-calc" data-action="2">2</button>
+                <button class="btn btn-light btn-calc" data-action="3">3</button>
+                <button class="btn btn-light btn-calc" data-action="add">+</button>
+                <button class="btn btn-light btn-calc" data-action="ln">ln</button>
+
+                <button class="btn btn-light btn-calc" data-action="plus-minus">+/-</button>
+                <button class="btn btn-light btn-calc" data-action="0">0</button>
+                <button class="btn btn-light btn-calc" data-action="decimal">.</button>
+                <button class="btn btn-equal btn-calc" data-action="equals">=</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        class Calculator {
+            constructor() {
+                this.currentValue = '0';
+                this.previousValue = '';
+                this.operation = '';
+                this.displayValue = '';  // Expression as a string
+                this.isExponent = false;
+                this.openParenthesesCount = 0;  // Track the number of opening parentheses
+                this.memoryValue = 0;              // Memory for MC, MR, M+, M-, MS
+                this.isSecondFunction = false; // Track the second function mode
+            }
+
+            updateScreen() {
+                document.querySelector('.screen').textContent = this.displayValue || '0';
+            }
+
+            appendNumber(number) {
+                if (this.currentValue === '0' || this.isExponent) {
+                    this.currentValue = number;
+                    this.isExponent = false;
+                } else {
+                    this.currentValue += number;
+                }
+                this.displayValue += number;
+                this.updateScreen();
+            }
+
+            clear() {
+                this.currentValue = '0';
+                this.previousValue = '';
+                this.operation = '';
+                this.displayValue = '';
+                this.isExponent = false;
+                this.openParenthesesCount = 0;
+                this.updateScreen();
+            }
+
+            backspace() {
+                this.currentValue = this.currentValue.slice(0, -1) || '0';
+                this.displayValue = this.displayValue.slice(0, -1);
+                this.updateScreen();
+            }
+
+            operate() {
+                if (!this.operation) return;
+
+                const num1 = parseFloat(this.previousValue);
+                const num2 = parseFloat(this.currentValue);
+                let result;
+
+                switch (this.operation) {
+                    case '+': result = num1 + num2; break;
+                    case '-': result = num1 - num2; break;
+                    case '*': result = num1 * num2; break;
+                    case '/': result = num2 === 0 ? 'Error' : num1 / num2; break;
+                    case '%': result = num1 % num2; break;
+                    case '^': result = Math.pow(num1, num2); break;
+                    default: return;
+                }
+
+                this.currentValue = result.toString();
+                this.displayValue = result.toString();
+                this.previousValue = '';
+                this.operation = '';
+                this.isExponent = false;
+                this.updateScreen();
+            }
+
+            setOperation(op) {
+                const operationsMap = {
+                    add: '+',
+                    minus: '-',
+                    multiply: '*',
+                    divide: '/',
+                    mod: '%'
+                };
+
+                if (this.previousValue !== '' && this.operation) {
+                    this.operation = operationsMap[op] || '';
+                    this.displayValue += ` ${this.operation} `;
+                } else {
+                    if (this.displayValue.length > 0 && !this.displayValue.endsWith(' ')) {
+                        this.operation = operationsMap[op] || '';
+                        this.previousValue = this.currentValue;
+                        this.currentValue = '0';
+                        this.displayValue += ` ${this.operation} `;
+                    }
+                }
+                this.updateScreen();
+            }
+
+            updateDisplay() {
+                this.displayValue = this.previousValue +
+                    (this.operation ? ` ${this.operation} ` : '') +
+                    this.currentValue;
+                this.updateScreen();
+            }
+
+            decimal() {
+                if (!this.currentValue.includes('.')) {
+                    this.currentValue += '.';
+                    this.displayValue += '.';
+                    this.updateScreen();
+                }
+            }
+
+            plusMinus() {
+                this.currentValue = (parseFloat(this.currentValue) * -1).toString();
+                this.displayValue = this.displayValue.replace(/-?[\d.]+$/, this.currentValue);
+                this.updateScreen();
+            }
+
+            square() {
+                this.currentValue = (Math.pow(parseFloat(this.currentValue), 2)).toString();
+                this.updateDisplay();
+            }
+
+            squareRoot() {
+                this.currentValue = (Math.sqrt(parseFloat(this.currentValue))).toString();
+                this.updateDisplay();
+            }
+
+            inverse() {
+                this.currentValue = (1 / parseFloat(this.currentValue)).toString();
+                this.updateDisplay();
+            }
+
+            absolute() {
+                this.currentValue = Math.abs(parseFloat(this.currentValue)).toString();
+                this.updateDisplay();
+            }
+
+            memoryClear() {
+                this.memoryValue = 0;
+                this.displayValue = '0';
+                this.updateScreen();
+            }
+
+            memoryRecall() {
+                if (this.memoryValue !== 0) {
+                    this.currentValue = this.memoryValue.toString();
+                    this.displayValue = this.currentValue;
+                    this.updateScreen();
+                } else {
+                    this.displayValue = '0';
+                    this.updateScreen();
+                }
+            }
+
+            memoryAdd() {
+                const valueToAdd = parseFloat(this.currentValue) || 0;
+                this.memoryValue += valueToAdd;
+                this.displayValue = `${this.memoryValue}`;
+                this.updateScreen();
+            }
+
+            memorySubtract() {
+                const valueToSubtract = parseFloat(this.currentValue) || 0;
+                this.memoryValue -= valueToSubtract;
+                this.displayValue = `${this.memoryValue}`;
+                this.updateScreen();
+            }
+
+            memoryStore() {
+                this.memoryValue = parseFloat(this.currentValue) || 0;
+                this.displayValue = `${this.memoryValue}`;
+                this.updateScreen();
+            }
+
+            pi() {
+                this.currentValue = Math.PI.toString();
+                this.displayValue += Math.PI;
+                this.updateScreen();
+            }
+
+            e() {
+                this.currentValue = Math.E.toString();
+                this.displayValue += Math.E;
+                this.updateScreen();
+            }
+
+            log() {
+                const value = parseFloat(this.currentValue);
+                this.currentValue = value > 0 ? Math.log10(value).toString() : 'Error';
+                this.updateDisplay();
+            }
+
+            factorial() {
+                const value = parseInt(this.currentValue);
+                this.currentValue = value < 0 ? 'Error' : this.calculateFactorial(value).toString();
+                this.updateDisplay();
+            }
+
+            calculateFactorial(num) {
+                return num === 0 || num === 1 ? 1 : num * this.calculateFactorial(num - 1);
+            }
+
+            ln() {
+                const value = parseFloat(this.currentValue);
+                this.currentValue = value > 0 ? Math.log(value).toString() : 'Error';
+                this.updateDisplay();
+            }
+
+            exp() {
+                this.currentValue = Math.exp(parseFloat(this.currentValue)).toString();
+                this.updateDisplay();
+            }
+
+            tenPowerX() {
+                this.currentValue = Math.pow(10, parseFloat(this.currentValue)).toString();
+                this.updateDisplay();
+            }
+
+            twoPowerX() {
+                this.currentValue = Math.pow(2, parseFloat(this.currentValue)).toString();
+                this.updateDisplay();
+            }
+
+            xPowerY() {
+                if (this.currentValue === '') return;
+
+                this.operation = '^';
+                this.previousValue = this.currentValue;
+                this.currentValue = '';
+                this.displayValue += ' ** ';
+                this.updateScreen();
+            }
+
+            appendParenthesis(open = true) {
+                console.log('Parenthesis Button Pressed:', open ? '(' : ')');
+                console.log('Before Update:', this.displayValue, 'openParenthesesCount:', this.openParenthesesCount);
+
+                if (open) {
+                    if (this.displayValue.match(/(sin|cos|tan|asin|acos|atan)\($/)) {
+                        return; // Prevent adding parentheses if the function already has an open parenthesis
+                    } else {
+                        this.displayValue += '(';
+                        this.openParenthesesCount++;
+                    }
+                } else {
+                    if (this.openParenthesesCount > 0) {
+                        this.displayValue += ')';
+                        this.openParenthesesCount--;
+                    }
+                }
+
+                console.log('After Update:', this.displayValue, 'openParenthesesCount:', this.openParenthesesCount);
+                this.updateScreen();
+            }
+
+
+
+            // evaluateExpression() {
+            //     try {
+            //         // Ensure that parentheses match
+            //         if (this.openParenthesesCount !== 0) {
+            //             throw new Error("Unmatched Parentheses");
+            //         }
+
+            //         // First, replace π and e with their numerical equivalents
+            //         let sanitizedExpression = this.displayValue
+            //             .replace(/π/g, `(${Math.PI})`)
+            //             .replace(/e/g, `(${Math.E})`);
+
+            //         // Now, handle trigonometric functions (sin, cos, tan, asin, acos, atan)
+            //         sanitizedExpression = sanitizedExpression.replace(/sin\(([^)]+)\)/g, (match, p1) => {
+            //             return `Math.sin(${this.degreesToRadians(p1)})`;
+            //         });
+
+            //         sanitizedExpression = sanitizedExpression.replace(/cos\(([^)]+)\)/g, (match, p1) => {
+            //             return `Math.cos(${this.degreesToRadians(p1)})`;
+            //         });
+
+            //         sanitizedExpression = sanitizedExpression.replace(/tan\(([^)]+)\)/g, (match, p1) => {
+            //             return `Math.tan(${this.degreesToRadians(p1)})`;
+            //         });
+
+            //         // Handling inverse trig functions
+            //         sanitizedExpression = sanitizedExpression.replace(/asin\(([^)]+)\)/g, (match, p1) => {
+            //             return `Math.asin(${p1})`; // Correctly using Math.asin
+            //         });
+
+            //         sanitizedExpression = sanitizedExpression.replace(/acos\(([^)]+)\)/g, (match, p1) => {
+            //             return `Math.acos(${p1})`; // Correctly using Math.acos
+            //         });
+
+            //         sanitizedExpression = sanitizedExpression.replace(/atan\(([^)]+)\)/g, (match, p1) => {
+            //             return `Math.atan(${p1})`; // Correctly using Math.atan
+            //         });
+
+            //         // Fix any potential left-over references to aMath (if you used 'aMath' earlier)
+            //         sanitizedExpression = sanitizedExpression.replace(/aMath/g, 'Math');
+
+            //         // Now safely evaluate the expression
+            //         const result = eval(sanitizedExpression);
+            //         this.currentValue = result.toString();
+            //         this.displayValue = result.toString();
+            //         this.updateScreen();
+
+            //     } catch (error) {
+            //         console.log("Error:", error);
+            //         this.displayValue = 'Error';
+            //         this.updateScreen();
+            //     }
+            // }
+
+            evaluateExpression() {
+                try {
+                    // Ensure parentheses match
+                    if (this.openParenthesesCount !== 0) {
+                        throw new Error("Unmatched Parentheses");
+                    }
+
+                    // Replace π and e with their numeric values
+                    let sanitizedExpression = this.displayValue
+                        .replace(/π/g, `(${Math.PI})`)
+                        .replace(/e/g, `(${Math.E})`);
+
+                    // Handle sin, cos, tan and convert angles from degrees to radians
+                    sanitizedExpression = sanitizedExpression.replace(/sin\(([^)]+)\)/g, (match, p1) => {
+                        return `Math.sin(${this.degreesToRadians(p1)})`;
+                    });
+
+                    sanitizedExpression = sanitizedExpression.replace(/cos\(([^)]+)\)/g, (match, p1) => {
+                        return `Math.cos(${this.degreesToRadians(p1)})`;
+                    });
+
+                    sanitizedExpression = sanitizedExpression.replace(/tan\(([^)]+)\)/g, (match, p1) => {
+                        return `Math.tan(${this.degreesToRadians(p1)})`;
+                    });
+
+                    // Inverse trig functions (asin, acos, atan) with degree conversion
+                    sanitizedExpression = sanitizedExpression.replace(/asin\(([^)]+)\)/g, (match, p1) => {
+                        // Ensure the result is converted to degrees after asin
+                        return `Math.asin(${p1}) * (180 / Math.PI)`;  // Convert radians to degrees
+                    });
+
+                    sanitizedExpression = sanitizedExpression.replace(/acos\(([^)]+)\)/g, (match, p1) => {
+                        // Ensure the result is converted to degrees after acos
+                        return `Math.acos(${p1}) * (180 / Math.PI)`;  // Convert radians to degrees
+                    });
+
+                    sanitizedExpression = sanitizedExpression.replace(/atan\(([^)]+)\)/g, (match, p1) => {
+                        // Ensure the result is converted to degrees after atan
+                        return `Math.atan(${p1}) * (180 / Math.PI)`;  // Convert radians to degrees
+                    });
+
+                    // Clean up any left-over 'aMath' references
+                    sanitizedExpression = sanitizedExpression.replace(/aMath/g, 'Math');
+
+                    // Now safely evaluate the expression
+                    const result = eval(sanitizedExpression);
+
+                    // Convert result to string to display on the screen
+                    this.currentValue = result.toString();
+                    this.displayValue = result.toString();
+                    this.updateScreen();
+
+                } catch (error) {
+                    console.log("Error:", error);
+                    this.displayValue = 'Error';
+                    this.updateScreen();
+                }
+            }
+
+
+
+
+            sin() {
+                if (!this.displayValue.includes('sin(')) {
+                    this.displayValue += 'sin(';
+                    this.openParenthesesCount++;
+                }
+                this.updateScreen();
+            }
+
+            cos() {
+                if (!this.displayValue.includes('cos(')) {
+                    this.displayValue += 'cos(';
+                    this.openParenthesesCount++;
+                }
+                this.updateScreen();
+            }
+
+            tan() {
+                if (!this.displayValue.includes('tan(')) {
+                    this.displayValue += 'tan(';
+                    this.openParenthesesCount++;
+                }
+                this.updateScreen();
+            }
+
+            // Inverse Trigonometric Functions
+            asin() {
+                if (!this.displayValue.includes('asin(')) {
+                    this.displayValue += 'asin(';
+                    this.openParenthesesCount++;
+                }
+                this.updateScreen();
+            }
+
+            acos() {
+                if (!this.displayValue.includes('acos(')) {
+                    this.displayValue += 'acos(';
+                    this.openParenthesesCount++;
+                }
+                this.updateScreen();
+            }
+
+            atan() {
+                if (!this.displayValue.includes('atan(')) {
+                    this.displayValue += 'atan(';
+                    this.openParenthesesCount++;
+                }
+                this.updateScreen();
+            }
+
+
+
+            // Correct function for converting degrees to radians
+            degreesToRadians(degrees) {
+                return degrees * (Math.PI / 180);
+            }
+            equals() {
+                this.evaluateExpression();
+            }
+        }
+
+
+        const calculator = new Calculator();
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const trigBtn = document.getElementById('trigBtn');
+            const trigDropdown = document.getElementById('trigDropdown');
+
+            if (!trigDropdown) {
+                console.error('Trigonometric dropdown not found!');
+                return;
+            }
+
+            trigBtn.addEventListener('click', function () {
+                trigDropdown.style.display = trigDropdown.style.display === 'none' || trigDropdown.style.display === '' ? 'block' : 'none';
+            });
+
+            // Add the event listeners for inverse trig functions
+            document.querySelectorAll('.btn-calc').forEach(button => {
+                button.addEventListener('click', function (event) {
+                    const action = event.target.getAttribute('data-action');
+                    console.log("Button clicked:", action);
+
+                    if (!isNaN(action)) {
+                        calculator.appendNumber(action);
+                    } else {
+                        const actionsMap = {
+                            clear: () => calculator.clear(),
+                            backspace: () => calculator.backspace(),
+                            equals: () => calculator.evaluateExpression(),
+                            decimal: () => calculator.decimal(),
+                            'plus-minus': () => calculator.plusMinus(),
+                            square: () => calculator.square(),
+                            sqrt: () => calculator.squareRoot(),
+                            inverse: () => calculator.inverse(),
+                            absolute: () => calculator.absolute(),
+                            sin: () => calculator.sin(),
+                            cos: () => calculator.cos(),
+                            tan: () => calculator.tan(),
+                            pi: () => calculator.pi(),
+                            e: () => calculator.e(),
+                            log: () => calculator.log(),
+                            factorial: () => calculator.factorial(),
+                            ln: () => calculator.ln(),
+                            exp: () => calculator.exp(),
+                            tenPowerX: () => calculator.tenPowerX(),
+                            twoPowerX: () => calculator.twoPowerX(),
+                            xPowerY: () => calculator.xPowerY(),
+                            'open-parenthesis': () => calculator.appendParenthesis(true),
+                            'close-parenthesis': () => calculator.appendParenthesis(false),
+                            add: () => calculator.setOperation('add'),
+                            minus: () => calculator.setOperation('minus'),
+                            multiply: () => calculator.setOperation('multiply'),
+                            divide: () => calculator.setOperation('divide'),
+                            mod: () => calculator.setOperation('mod'),
+
+                            // Memory button functionalities
+                            mc: () => {
+                                calculator.memoryClear();
+                                console.log("Memory Clear button clicked");
+                            },
+                            mr: () => {
+                                calculator.memoryRecall();
+                                console.log("Memory Recall button clicked");
+                            },
+                            'M+': () => {
+                                calculator.memoryAdd();
+                                console.log("Memory Add button clicked");
+                            },
+                            'M-': () => {
+                                calculator.memorySubtract();
+                                console.log("Memory Subtract button clicked");
+                            },
+                            ms: () => {
+                                calculator.memoryStore();
+                                console.log("Memory Store button clicked");
+                            },
+
+                            // Inverse trigonometric functions
+                            'sin^-1': () => calculator.asin(),
+                            'cos^-1': () => calculator.acos(),
+                            'tan^-1': () => calculator.atan(),
+                        };
+
+                        // Execute the corresponding function for the action
+                        if (actionsMap[action]) {
+                            actionsMap[action]();
+                        } else {
+                            console.log(`No action defined for: ${action}`);
+                        }
+                    }
+                });
+            });
+        });
+
+
+
+    </script>
+
+
+</body>
+
+</html>

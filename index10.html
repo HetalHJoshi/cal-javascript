@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa !important;
+        }
+
+        .calculator {
+            width: 350px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .screen {
+            font-size: 2rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+            width: 100%;
+            height: 150px;
+        }
+
+        .btn-calc {
+            width: 60px;
+            height: 40px;
+            font-size: 1.1rem;
+            margin: 3px;
+            background-color: white;
+            border-radius: 0 !important;
+        }
+
+        .btn-calc sup {
+            font-size: 0.75em;
+        }
+
+        .gap-25px {
+            gap: 25px;
+        }
+
+        .calDiv__btn {
+            background-color: transparent;
+            box-shadow: none;
+        }
+
+        .calDiv {
+            padding: 0.6rem;
+            max-height: 100%;
+            box-shadow: 0rem 0rem 0.25rem 0.0625rem grey;
+        }
+
+        .btn-equal {
+            background-color: #6690ce !important;
+            color: white;
+        }
+
+        .btn-opacity {
+            opacity: 0.6;
+        }
+
+        .btn-bold {
+            font-weight: bold;
+        }
+
+        .btn-trig-func {
+            font-size: .75rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+            border-radius: 5px;
+            padding: 6px 0px;
+        }
+
+        .calDiv__trigonoImg--size {
+            width: 1.1rem;
+            object-fit: contain;
+            vertical-align: middle;
+            transform: rotate(270deg);
+        }
+
+        .arrow-icon {
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        .row {
+            --bs-gutter-x: 1.5rem;
+            --bs-gutter-y: 0;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: calc(-1 * var(--bs-gutter-y));
+            margin-right: calc(-.5 * var(--bs-gutter-x));
+            margin-left: calc(-0.2 * var(--bs-gutter-x));
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="calculator">
+            <div class="screen">0</div>
+
+            <div class="d-flex justify-content-start ms-1 gap-25px">
+                <button class="btn btn-light calDiv__btn border-0 p-1">DEG</button>
+                <button class="btn btn-light calDiv__btn border-0 p-1">F-E</button>
+            </div>
+
+            <div class="d-flex justify-content-between my-2">
+                <button class="btn btn-light btn-sm btn-opacity">MC</button>
+                <button class="btn btn-light btn-sm btn-opacity">MR</button>
+                <button class="btn btn-light btn-sm btn-bold">M+</button>
+                <button class="btn btn-light btn-sm btn-bold">M-</button>
+                <button class="btn btn-light btn-sm btn-bold">MS</button>
+            </div>
+
+            <div class="d-flex justify-content-start ms-1 gap-25px">
+                <button class="btn btn-light btn-sm btn-trig-func">
+                    <img src="./images/triangle.png" alt="triangle" class="calDiv__trigonoImg--size">
+                    Trigonometry
+                    <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                </button>
+
+                <button class="btn btn-light btn-sm btn-trig-func">
+                    𝑓 Function
+                    <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                </button>
+            </div>
+
+            <div class="row text-center">
+                <button class="btn btn-light btn-calc">2<sup>nd</sup></button>
+                <button class="btn btn-light btn-calc" data-action="pi">π</button>
+                <button class="btn btn-light btn-calc" data-action="e">e</button>
+                <button class="btn btn-light btn-calc" data-action="clear">C</button>
+                <button class="btn btn-light btn-calc" data-action="backspace">⌫</button>
+                <button class="btn btn-light btn-calc" data-action="square">x²</button>
+                <button class="btn btn-light btn-calc" data-action="inverse">¹∕ₓ</button>
+                <button class="btn btn-light btn-calc" data-action="absolute">|x|</button>
+                <button class="btn btn-light btn-calc">exp</button>
+                <button class="btn btn-light btn-calc" data-action="mod">mod</button>
+                <button class="btn btn-light btn-calc" data-action="sqrt">√x</button>
+                <button class="btn btn-light btn-calc">(</button>
+                <button class="btn btn-light btn-calc">)</button>
+                <button class="btn btn-light btn-calc" data-action="factorial">n!</button>
+                <button class="btn btn-light btn-calc" data-action="divide">÷</button>
+                <button class="btn btn-light btn-calc" data-action="xPowerY">xʸ</button>
+
+                <button class="btn btn-light btn-calc" data-action="7">7</button>
+                <button class="btn btn-light btn-calc" data-action="8">8</button>
+                <button class="btn btn-light btn-calc" data-action="9">9</button>
+                <button class="btn btn-light btn-calc" data-action="multiply">×</button>
+                <button class="btn btn-light btn-calc" data-action="10PowerX">10ˣ</button>
+                <button class="btn btn-light btn-calc" data-action="4">4</button>
+                <button class="btn btn-light btn-calc" data-action="5">5</button>
+                <button class="btn btn-light btn-calc" data-action="6">6</button>
+                <button class="btn btn-light btn-calc" data-action="minus">−</button>
+                <button class="btn btn-light btn-calc" data-action="log">log</button>
+                <button class="btn btn-light btn-calc" data-action="1">1</button>
+                <button class="btn btn-light btn-calc" data-action="2">2</button>
+                <button class="btn btn-light btn-calc" data-action="3">3</button>
+                <button class="btn btn-light btn-calc" data-action="add">+</button>
+                <button class="btn btn-light btn-calc" data-action="ln">ln</button>
+
+                <button class="btn btn-light btn-calc" data-action="plus-minus">+/-</button>
+                <button class="btn btn-light btn-calc" data-action="0">0</button>
+                <button class="btn btn-light btn-calc" data-action="decimal">.</button>
+                <button class="btn btn-equal btn-calc" data-action="equals">=</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class Calculator {
+            constructor() {
+                this.currentValue = '0';  // Current number being typed
+                this.previousValue = '';  // Previous value before an operation
+                this.operation = '';  // Stores the current operation (+, -, *, /, %)
+                this.displayValue = '';  // Displays the whole expression
+            }
+
+            updateScreen() {
+                document.querySelector('.screen').textContent = this.displayValue;
+            }
+
+            appendNumber(number) {
+                if (this.currentValue === '0') {
+                    this.currentValue = number;
+                } else {
+                    this.currentValue += number;
+                }
+                this.updateDisplay();
+            }
+
+            clear() {
+                this.currentValue = '0';
+                this.previousValue = '';
+                this.operation = '';
+                this.displayValue = '';
+                this.updateScreen();
+            }
+
+            backspace() {
+                this.currentValue = this.currentValue.slice(0, -1) || '0';
+                this.updateDisplay();
+            }
+
+            operate() {
+                if (this.operation === '') return;
+
+                const num1 = parseFloat(this.previousValue);
+                const num2 = parseFloat(this.currentValue);
+
+                let result;
+                switch (this.operation) {
+                    case '+':
+                        result = num1 + num2;
+                        break;
+                    case '-':
+                        result = num1 - num2;
+                        break;
+                    case '*':
+                        result = num1 * num2;
+                        break;
+                    case '/':
+                        result = num2 === 0 ? 'Error' : num1 / num2;
+                        break;
+                    case '%':
+                        result = num1 % num2;
+                        break;
+                    default:
+                        return;
+                }
+
+                this.currentValue = result.toString();
+                this.displayValue = result.toString();
+                this.previousValue = '';
+                this.operation = '';
+                this.updateScreen();
+            }
+
+            setOperation(op) {
+                if (this.previousValue !== '') {
+                    this.operate();
+                }
+
+                // Set the operation and adjust display
+                if (op === 'add') {
+                    this.operation = '+';
+                } else if (op === 'minus') {
+                    if (this.currentValue === '0') {
+                        this.currentValue = '-';
+                    } else {
+                        this.operation = '-';
+                        this.previousValue = this.currentValue;
+                        this.currentValue = '0';
+                    }
+                } else if (op === 'multiply') {
+                    this.operation = '*';
+                } else if (op === 'divide') {
+                    this.operation = '/';
+                } else if (op === 'mod') {
+                    this.operation = '%';  // Use % for modulus
+                } else if (op === 'xPowerY') {
+                    this.operation = 'xPowerY';  // Set for x^y operation
+                    this.previousValue = this.currentValue;  // Store the base value
+                    this.currentValue = '0';  // Reset the current value for exponent input
+                    this.displayValue = `${this.previousValue} ^`;  // Show base ^ symbol
+                    this.updateScreen();
+                    return;  // Don't continue normal flow after this operation
+                } else if (op === '10PowerX') {
+                    this.operation = '10PowerX';  // Set for 10^x operation
+                    this.previousValue = this.currentValue;  // Store the exponent value
+                    this.currentValue = '0';  // Reset the current value for exponent input
+                    this.displayValue = `10 ^`;  // Show 10 ^ symbol
+                    this.updateScreen();
+                    return;  // Don't continue normal flow after this operation
+                }
+
+                // Prepare the display to show the current operation symbol
+                if (op !== 'minus') {
+                    this.previousValue = this.currentValue;
+                    this.currentValue = '0';
+                }
+
+                // Display the operation
+                this.displayValue += ` ${op === 'add' ? '+' :
+                    op === 'minus' ? '−' :
+                        op === 'multiply' ? '×' :
+                            op === 'divide' ? '÷' :
+                                op === 'mod' ? '%' : ''} `;
+                this.updateScreen();
+            }
+
+            updateDisplay() {
+                this.displayValue = this.previousValue + (this.operation ? ` ${this.operation === '+' ? '+' : this.operation === '-' ? '−' : this.operation === '*' ? '×' : this.operation === '/' ? '÷' : this.operation === '%' ? '%' : ''} ` : '') + this.currentValue;
+                this.updateScreen();
+            }
+
+            decimal() {
+                if (!this.currentValue.includes('.')) {
+                    this.currentValue += '.';
+                    this.updateDisplay();
+                }
+            }
+
+            plusMinus() {
+                this.currentValue = (parseFloat(this.currentValue) * -1).toString();
+                this.updateDisplay();
+            }
+
+            square() {
+                this.currentValue = (Math.pow(parseFloat(this.currentValue), 2)).toString();
+                this.updateDisplay();
+            }
+
+            squareRoot() {
+                this.currentValue = (Math.sqrt(parseFloat(this.currentValue))).toString();
+                this.updateDisplay();
+            }
+
+            inverse() {
+                this.currentValue = (1 / parseFloat(this.currentValue)).toString();
+                this.updateDisplay();
+            }
+
+            absolute() {
+                this.currentValue = Math.abs(parseFloat(this.currentValue)).toString();
+                this.updateDisplay();
+            }
+
+            pi() {
+                this.currentValue = Math.PI.toString();
+                this.updateDisplay();
+            }
+
+            e() {
+                this.currentValue = Math.E.toString();
+                this.updateDisplay();
+            }
+
+            log() {
+                const value = parseFloat(this.currentValue);
+                if (value <= 0) {
+                    this.currentValue = 'Error';
+                } else {
+                    this.currentValue = Math.log(value).toString();
+                }
+                this.updateDisplay();
+            }
+
+            factorial() {
+                const value = parseInt(this.currentValue);
+                if (value < 0) {
+                    this.currentValue = 'Error';
+                } else {
+                    this.currentValue = this.calculateFactorial(value).toString();
+                }
+                this.updateDisplay();
+            }
+
+            calculateFactorial(num) {
+                if (num === 0 || num === 1) return 1;
+                return num * this.calculateFactorial(num - 1);
+            }
+
+            ln() {
+                const value = parseFloat(this.currentValue);
+                if (value <= 0) {
+                    this.currentValue = 'Error';
+                } else {
+                    this.currentValue = Math.log(value).toString();
+                }
+                this.updateDisplay();
+            }
+
+            xPowerY() {
+                const base = parseFloat(this.previousValue);
+                const exponent = parseFloat(this.currentValue);
+
+                if (isNaN(base) || isNaN(exponent)) {
+                    this.currentValue = 'Error';
+                    this.updateDisplay();
+                    return;
+                }
+
+                const result = Math.pow(base, exponent);
+                this.currentValue = result.toString();
+                this.displayValue = `${base} ^ ${exponent} = ${result}`;
+                this.updateScreen();
+            }
+        }
+
+        const calculator = new Calculator();
+
+        document.querySelectorAll('.btn-calc').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const action = event.target.getAttribute('data-action');
+
+                if (action >= '0' && action <= '9') {
+                    calculator.appendNumber(action);
+                } else if (action === 'clear') {
+                    calculator.clear();
+                } else if (action === 'backspace') {
+                    calculator.backspace();
+                } else if (action === 'mod' || action === 'add' || action === 'minus' || action === 'multiply' || action === 'divide') {
+                    calculator.setOperation(action);
+                } else if (action === 'equals') {
+                    calculator.operate();
+                } else if (action === 'decimal') {
+                    calculator.decimal();
+                } else if (action === 'plus-minus') {
+                    calculator.plusMinus();
+                } else if (action === 'square') {
+                    calculator.square();
+                } else if (action === 'sqrt') {
+                    calculator.squareRoot();
+                } else if (action === 'inverse') {
+                    calculator.inverse();
+                } else if (action === 'absolute') {
+                    calculator.absolute();
+                } else if (action === 'pi') {
+                    calculator.pi();
+                } else if (action === 'e') {
+                    calculator.e();
+                } else if (action === 'log') {
+                    calculator.log();
+                } else if (action === 'factorial') {
+                    calculator.factorial();
+                } else if (action === 'ln') {
+                    calculator.ln();
+                }// Set operation for xʸ (xPowerY)
+                else if (action === 'xPowerY') {
+                    calculator.setOperation('xPowerY');
+                }
+                // Set operation for 10^x (10PowerX)
+                else if (action === '10PowerX') {
+                    calculator.setOperation('10PowerX');
+                }
+            });
+        });
+
+    </script>
+
+
+
+</body>
+
+</html>

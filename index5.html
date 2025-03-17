@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .calculator {
+            width: 350px;
+            padding: 15px;
+            background: rgba(131, 131, 131, 0.35);
+            box-shadow: rgba(0, 0, 0, 0.35) 0rem 0.31rem 0.5rem;
+        }
+
+        .screen {
+            font-size: 2rem;
+            text-align: right;
+            padding: 10px;
+            width: 100%;
+            height: 70px;
+            overflow: hidden;
+            white-space: nowrap;
+            border: 1px solid #ccc;
+            background: white;
+        }
+
+        .btn-calc {
+            width: 60px;
+            height: 40px;
+            font-size: 1.1rem;
+            margin: 3px;
+            background-color: white;
+        }
+
+        .btn-equal {
+            background-color: #6690ce !important;
+            color: white;
+        }
+
+        .btn-bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="calculator">
+            <div class="screen">0</div>
+
+            <div class="d-flex justify-content-start my-2">
+                <button class="btn btn-light border-0 p-1">DEG</button>
+                <button class="btn btn-light border-0 p-1">F-E</button>
+            </div>
+
+            <div class="row text-center">
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('Math.PI')">π</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('Math.E')">e</button>
+                <button class="btn btn-light btn-calc" onclick="clearScreen()">C</button>
+                <button class="btn btn-light btn-calc" onclick="deleteLast()">⌫</button>
+
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('**2')">x²</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('Math.sqrt(')">√</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('(')">(</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen(')')">)</button>
+
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('7')">7</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('8')">8</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('9')">9</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('/')">÷</button>
+
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('4')">4</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('5')">5</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('6')">6</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('*')">×</button>
+
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('1')">1</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('2')">2</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('3')">3</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('-')">−</button>
+
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('0')">0</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('.')">.</button>
+                <button class="btn btn-light btn-equal btn-calc" onclick="calculateResult()">=</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('+')">+</button>
+
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('Math.sin(')">sin</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('Math.cos(')">cos</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('Math.tan(')">tan</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('**')">xʸ</button>
+
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('Math.log(')">log</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('Math.exp(')">exp</button>
+                <button class="btn btn-light btn-calc" onclick="calculateFactorial()">n!</button>
+                <button class="btn btn-light btn-calc" onclick="appendToScreen('%')">mod</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let screen = document.querySelector(".screen");
+
+        function appendToScreen(value) {
+            if (screen.textContent === "0" || screen.textContent === "Error") {
+                screen.textContent = value;
+            } else {
+                screen.textContent += value;
+            }
+        }
+
+        function clearScreen() {
+            screen.textContent = "0";
+        }
+
+        function deleteLast() {
+            screen.textContent = screen.textContent.slice(0, -1) || "0";
+        }
+
+        function calculateResult() {
+            try {
+                let result = eval(screen.textContent.replace(/Math.sqrt\(/g, 'Math.sqrt('));
+                screen.textContent = result;
+            } catch {
+                screen.textContent = "Error";
+            }
+        }
+
+        function calculateFactorial() {
+            let num = parseInt(screen.textContent);
+            if (isNaN(num) || num < 0) {
+                screen.textContent = "Error";
+                return;
+            }
+            let fact = 1;
+            for (let i = 2; i <= num; i++) {
+                fact *= i;
+            }
+            screen.textContent = fact;
+        }
+    </script>
+</body>
+
+</html>
